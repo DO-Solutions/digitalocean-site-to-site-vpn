@@ -36,3 +36,29 @@ We will then access this HTTP server from backend-ams3 via a private network.
 ```
 curl http://10.108.0.3:8000
 ```
+
+This is the response you should expect to get.
+```
+root@backend-ams3:~# curl http://10.108.0.3:8000
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Directory listing for /</title>
+</head>
+<body>
+<h1>Directory listing for /</h1>
+<hr>
+<ul>
+<li><a href=".bashrc">.bashrc</a></li>
+<li><a href=".cache/">.cache/</a></li>
+<li><a href=".cloud-locale-test.skip">.cloud-locale-test.skip</a></li>
+<li><a href=".profile">.profile</a></li>
+<li><a href=".ssh/">.ssh/</a></li>
+<li><a href=".wget-hsts">.wget-hsts</a></li>
+<li><a href="snap/">snap/</a></li>
+</ul>
+<hr>
+</body>
+</html>
+```
