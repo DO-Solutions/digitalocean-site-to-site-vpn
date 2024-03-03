@@ -18,11 +18,96 @@ This particular implementation uses IKEv2 and pre-shared keys. It also employs a
 
 ## Configuration
 
-- **strongswan-ams3 Droplet configuration**
-- **strongswan-nyc3 Droplet configuration**
-- **backend-ams3 Droplet configuration**
-- **backend-nyc3 Droplet configuration**
+**strongswan-ams3** Droplet configuration (Ubuntu 22.04)
+```
+apt install strongswan -y
+apt install net-tools -y
 
+nano /etc/ipsec.conf
+
+conn %default
+	ikelifetime=60m
+	keylife=20m
+	rekeymargin=3m
+	keyingtries=1
+	authby=secret
+	keyexchange=ikev2
+	mobike=no
+
+conn net-net
+	leftid=@ams3
+	leftfirewall=yes
+	left=167.99.46.201
+	leftsubnet=10.110.0.0/20
+
+	right=64.225.7.37
+	rightsubnet=10.108.0.0/20
+	rightid=@nyc3
+	auto=start
+
+	type=tunnel
+	dpdaction=restart
+
+nano /etc/ipsec.secrets
+@ams3 @nyc3 : PSK 'cm9ja2VyYm66ZXIK'
+
+sudo ufw disable
+sysctl -w net.ipv4.ip_forward=1
+
+ipsec rereadsecrets
+ipsec reload
+ipsec status
+```
+**strongswan-nyc3** Droplet configuration (Ubuntu 22.04)
+```
+apt install strongswan -y
+apt install net-tools -y
+
+nano /etc/ipsec.conf
+
+conn %default
+	ikelifetime=60m
+	keylife=20m
+	rekeymargin=3m
+	keyingtries=1
+	authby=secret
+	keyexchange=ikev2
+	mobike=no
+
+conn net-net
+	leftid=@nyc3
+	leftfirewall=yes
+	left=64.225.7.37
+	leftsubnet=10.108.0.0/20
+
+	right=167.99.46.201
+	rightsubnet=10.110.0.0/20
+	rightid=@ams3
+	auto=start
+
+	type=tunnel
+	dpdaction=restart
+
+nano /etc/ipsec.secrets
+@nyc3 @ams3 : PSK 'cm9ja2VyYm66ZXIK'
+
+sudo ufw disable
+sysctl -w net.ipv4.ip_forward=1
+
+ipsec rereadsecrets
+ipsec reload
+ipsec status
+```
+**backend-ams3** Droplet configuration (Ubuntu 22.04)
+```
+apt install net-tools -y
+ip route add 10.108.0.0/20 via 10.110.0.7 dev eth1
+```
+**backend-nyc3** Droplet configuration (Ubuntu 22.04)
+```
+apt install net-tools -y
+ip route add 10.110.0.0/20 via 10.108.0.2 dev eth1
+```
 ## Verification
 
 To verify this setup, we will use Python to run an HTTP server on the backend-nyc3 Droplet. 
@@ -38,27 +123,26 @@ curl http://10.108.0.3:8000
 ```
 
 This is the response you should expect to get.
-```
-root@backend-ams3:~# curl http://10.108.0.3:8000
+```html
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Directory listing for /</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Directory listing for /</title>
 </head>
 <body>
-<h1>Directory listing for /</h1>
-<hr>
-<ul>
-<li><a href=".bashrc">.bashrc</a></li>
-<li><a href=".cache/">.cache/</a></li>
-<li><a href=".cloud-locale-test.skip">.cloud-locale-test.skip</a></li>
-<li><a href=".profile">.profile</a></li>
-<li><a href=".ssh/">.ssh/</a></li>
-<li><a href=".wget-hsts">.wget-hsts</a></li>
-<li><a href="snap/">snap/</a></li>
-</ul>
-<hr>
+    <h1>Directory listing for /</h1>
+    <hr>
+    <ul>
+        <li><a href=".bashrc">.bashrc</a></li>
+        <li><a href=".cache/">.cache/</a></li>
+        <li><a href=".cloud-locale-test.skip">.cloud-locale-test.skip</a></li>
+        <li><a href=".profile">.profile</a></li>
+        <li><a href=".ssh/">.ssh/</a></li>
+        <li><a href=".wget-hsts">.wget-hsts</a></li>
+        <li><a href="snap/">snap/</a></li>
+    </ul>
+    <hr>
 </body>
 </html>
 ```
