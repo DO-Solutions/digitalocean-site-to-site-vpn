@@ -13,7 +13,7 @@ A few notes about this architecture:
 - It doesn't have to be DigitalOcean on both sides of the VPN tunnel; any other cloud provider or on-premises data center will work.
 - It doesn't have to be just two sites; you can have multiple sites and establish a partial or full connection mesh.
 
-This particular implementation uses IKEv2 and pre-shared keys. It also employs an always-on VPN tunnel, but feel free to use an on-demand tunnel if it suits your needs better.
+This particular implementation uses IKEv2 and pre-shared keys. It also employs an always-on VPN tunnel, but feel free to use an on-demand tunnel with `auto=route` if it suits your needs better.
 
 ## Configuration
 
