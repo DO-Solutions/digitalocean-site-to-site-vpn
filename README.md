@@ -8,10 +8,9 @@ Imagine running workloads in two DigitalOcean data centers in different regions 
 
 ![Architecture Diagram](https://lucid.app/publicSegments/view/24b18af7-7e06-4d37-b7f8-d117aae9f0e3/image.png)
 
-**A few notes about this architecture:**
-
-- It doesn't have to be StrongSwan on both sides of a VPN tunnel; any IPsec software/hardware gateway will do.
-- It doesn't have to be DigitalOcean on both sides of a VPN tunnel; any other cloud provider or on-premises datacenter will work.
+A few notes about this architecture:
+- It doesn't have to be StrongSwan on both sides of the VPN tunnel; any IPsec software/hardware gateway will do.
+- It doesn't have to be DigitalOcean on both sides of the VPN tunnel; any other cloud provider or on-premises data center will work.
 - It doesn't have to be just two sites; you can have multiple sites and establish a partial or full connection mesh.
 
 This particular implementation uses IKEv2 and pre-shared keys. It also employs an always-on VPN tunnel, but feel free to use an on-demand tunnel if it suits your needs better.
