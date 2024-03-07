@@ -147,4 +147,6 @@ This is the response you should expect to get.
 ```
 
 ## Contact
-If you wish to learn more about DigitalOcean's services, feel free to contact me at [vprokopov@digitalocean.com](mailto:vprokopov@digitalocean.com). You are also welcome to reach out to the sales team at [sales@digitalocean.com](mailto:sales@digitalocean.com). A global team of talented engineers will be happy to provide assistance.
+Vasily Prokopov, Solutions Engineer – [vprokopov@digitalocean.com](mailto:vprokopov@digitalocean.com)  
+
+If you wish to learn more about DigitalOcean's services, you are welcome to reach out to the sales team at [sales@digitalocean.com](mailto:sales@digitalocean.com). A global team of talented engineers will be happy to provide assistance.
